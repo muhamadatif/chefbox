@@ -8,9 +8,13 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { signupSchema } from "@/schemas/auth";
 import Button from "@/components/Button";
+import { ScrollView } from "react-native-gesture-handler";
+import { useKeyboardVisibility } from "@/hooks/useKeyboardVisibility";
 
 const Signup = () => {
   const router = useRouter();
+  const isKeyboardVisible = useKeyboardVisibility();
+
   const {
     control,
     handleSubmit,
@@ -25,7 +29,12 @@ const Signup = () => {
     router.replace("/(auth)/verification");
   };
   return (
-    <View style={styles.container}>
+    <ScrollView
+      style={styles.container}
+      contentContainerStyle={{ paddingBottom: isKeyboardVisible ? 100 : 60 }}
+      showsVerticalScrollIndicator={false}
+      keyboardShouldPersistTaps="always"
+    >
       <View>
         <Text style={styles.headerText}>Sign up</Text>
       </View>
@@ -51,9 +60,7 @@ const Signup = () => {
           // label="Email or phone"
         />
       </View>
-
       <Button label="Sign up" onPress={handleSubmit(onSubmit)} />
-
       <View style={styles.footer}>
         <Text
           style={{ fontSize: 12, color: COLORS.grayMedium, fontWeight: "bold" }}
@@ -68,7 +75,7 @@ const Signup = () => {
           </Text>
         </TouchableOpacity>
       </View>
-    </View>
+    </ScrollView>
   );
 };
 

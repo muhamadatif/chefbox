@@ -4,9 +4,13 @@ import { COLORS } from "@/constants/Colors";
 import { OtpInput } from "react-native-otp-entry";
 import Button from "@/components/Button";
 import CustomHeader from "@/components/CustomHeader";
+import { ScrollView } from "react-native-gesture-handler";
+import { useKeyboardVisibility } from "@/hooks/useKeyboardVisibility";
 
 const Verification = () => {
   const [otp, setOtp] = useState("");
+  const isKeyboardVisible = useKeyboardVisibility();
+
   return (
     <>
       <CustomHeader>
@@ -16,7 +20,12 @@ const Verification = () => {
           <Text style={{ fontWeight: "bold" }}>mohamed@org.io</Text>
         </Text>
       </CustomHeader>
-      <View style={styles.verificationForm}>
+      <ScrollView
+        style={styles.container}
+        contentContainerStyle={{ paddingBottom: isKeyboardVisible ? 100 : 60 }}
+        showsVerticalScrollIndicator={false}
+        keyboardShouldPersistTaps="always"
+      >
         <View style={styles.otpContainer}>
           <Text>Enter verification code</Text>
           <View style={styles.otpInput}>
@@ -32,15 +41,20 @@ const Verification = () => {
           onPress={() => console.log("hi")}
           type="secondary"
         />
-      </View>
-      <View style={styles.resendContainer}>
-        <Text style={styles.resendText}>Resend in 40 Sec</Text>
-      </View>
+        <View style={styles.resendContainer}>
+          <Text style={styles.resendText}>Resend in 40 Sec</Text>
+        </View>
+      </ScrollView>
     </>
   );
 };
 
 const styles = StyleSheet.create({
+  container: {
+    backgroundColor: "#fff",
+    flex: 1,
+    padding: 36,
+  },
   header: {
     height: 170,
     backgroundColor: COLORS.primary,

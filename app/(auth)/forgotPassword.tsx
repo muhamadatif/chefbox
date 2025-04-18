@@ -1,4 +1,10 @@
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  ScrollView,
+} from "react-native";
 import React, { useState } from "react";
 import { Link, useRouter } from "expo-router";
 import { COLORS } from "@/constants/Colors";
@@ -8,10 +14,13 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { forgotPasswordSchema } from "@/schemas/auth";
 import Button from "@/components/Button";
+import { useKeyboardVisibility } from "@/hooks/useKeyboardVisibility";
 
 const ForgotPassword = () => {
   const [successfulCode, setSuccessfulCode] = useState("");
   const router = useRouter();
+  const isKeyboardVisible = useKeyboardVisibility();
+
   const {
     control,
     handleSubmit,
@@ -39,7 +48,12 @@ const ForgotPassword = () => {
     // router.replace("/(app)/home");
   };
   return (
-    <View style={styles.container}>
+    <ScrollView
+      style={styles.container}
+      contentContainerStyle={{ paddingBottom: isKeyboardVisible ? 100 : 60 }}
+      showsVerticalScrollIndicator={false}
+      keyboardShouldPersistTaps="always"
+    >
       <View style={styles.headerContainer}>
         <Text style={styles.header}>Forgot Password</Text>
         <Text style={styles.subHeader}>
@@ -74,9 +88,7 @@ const ForgotPassword = () => {
           // label="Email or phone"
         />
       </View>
-
       <Button label="Reset password" onPress={handleSubmit(onSubmit)} />
-
       <View style={styles.footer}>
         <Text
           style={{ fontSize: 12, color: COLORS.grayMedium, fontWeight: "bold" }}
@@ -91,7 +103,7 @@ const ForgotPassword = () => {
           </Text>
         </TouchableOpacity>
       </View>
-    </View>
+    </ScrollView>
   );
 };
 

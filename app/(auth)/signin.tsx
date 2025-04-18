@@ -9,9 +9,12 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { signinSchema } from "@/schemas/auth";
 import { Ionicons } from "@expo/vector-icons";
 import Button from "@/components/Button";
+import { ScrollView } from "react-native-gesture-handler";
+import { useKeyboardVisibility } from "@/hooks/useKeyboardVisibility";
 
 const Signin = () => {
   const [showPassword, setShowPassword] = useState(false);
+  const isKeyboardVisible = useKeyboardVisibility();
 
   const router = useRouter();
   const {
@@ -37,7 +40,12 @@ const Signin = () => {
     router.replace("/(app)/home");
   };
   return (
-    <View style={styles.container}>
+    <ScrollView
+      style={styles.container}
+      contentContainerStyle={{ paddingBottom: isKeyboardVisible ? 100 : 60 }}
+      showsVerticalScrollIndicator={false}
+      keyboardShouldPersistTaps="always"
+    >
       <View>
         <Text style={styles.headerText}>Sign in</Text>
       </View>
@@ -102,7 +110,7 @@ const Signin = () => {
           </Text>
         </TouchableOpacity>
       </View>
-    </View>
+    </ScrollView>
   );
 };
 

@@ -1,4 +1,10 @@
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  ScrollView,
+} from "react-native";
 import React, { useState } from "react";
 import { Link, useRouter } from "expo-router";
 import { COLORS } from "@/constants/Colors";
@@ -9,9 +15,12 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { newPasswordSchema } from "@/schemas/auth";
 import Button from "@/components/Button";
 import CustomHeader from "@/components/CustomHeader";
+import { useKeyboardVisibility } from "@/hooks/useKeyboardVisibility";
 
 const NewPassword = () => {
   const router = useRouter();
+  const isKeyboardVisible = useKeyboardVisibility();
+
   const {
     control,
     handleSubmit,
@@ -35,7 +44,12 @@ const NewPassword = () => {
           </Text>
         </View>
       </CustomHeader>
-      <View style={styles.container}>
+      <ScrollView
+        style={styles.container}
+        contentContainerStyle={{ paddingBottom: isKeyboardVisible ? 100 : 60 }}
+        showsVerticalScrollIndicator={false}
+        keyboardShouldPersistTaps="always"
+      >
         <View style={styles.form}>
           <FormField
             name="password"
@@ -57,13 +71,12 @@ const NewPassword = () => {
             }
           />
         </View>
-
         <Button
           type="secondary"
           label="Reset password"
           onPress={handleSubmit(onSubmit)}
         />
-      </View>
+      </ScrollView>
     </>
   );
 };
