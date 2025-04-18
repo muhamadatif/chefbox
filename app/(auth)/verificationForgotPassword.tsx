@@ -1,15 +1,39 @@
 import { View, Text, StyleSheet } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { COLORS } from "@/constants/Colors";
 import { OtpInput } from "react-native-otp-entry";
 import Button from "@/components/Button";
 import CustomHeader from "@/components/CustomHeader";
 import { ScrollView } from "react-native-gesture-handler";
 import { useKeyboardVisibility } from "@/hooks/useKeyboardVisibility";
+import { useRouter } from "expo-router";
 
-const Verification = () => {
+const VerificationSignup = () => {
   const [otp, setOtp] = useState("");
   const isKeyboardVisible = useKeyboardVisibility();
+  const [counter, setCounter] = useState(40);
+  const [error, setError] = useState("");
+  const router = useRouter();
+
+  useEffect(() => {
+    if (counter === 0) {
+      setError("No code was entered!");
+      setCounter(40);
+
+      return;
+    }
+    const timer = setTimeout(() => {
+      setCounter((counter) => counter - 1);
+    }, 1000);
+
+    return () => clearTimeout(timer);
+  }, [counter]);
+
+  const handleSubmit = () => {
+    if (otp) {
+      router.replace("/(auth)/newPassword");
+    }
+  };
 
   return (
     <>
@@ -31,18 +55,25 @@ const Verification = () => {
           <View style={styles.otpInput}>
             <OtpInput
               numberOfDigits={6}
-              onTextChange={(text) => setOtp(text)}
+              onTextChange={(text) => {
+                setOtp(text);
+                setError("");
+              }}
               autoFocus={false}
             />
           </View>
+          {error && (
+            <View style={styles.errorContainer}>
+              <Text style={{ color: COLORS.danger, fontWeight: "bold" }}>
+                {error}
+              </Text>
+            </View>
+          )}
         </View>
-        <Button
-          label="Verifiy"
-          onPress={() => console.log("hi")}
-          type="secondary"
-        />
+
+        <Button label="Verifiy" onPress={handleSubmit} type="secondary" />
         <View style={styles.resendContainer}>
-          <Text style={styles.resendText}>Resend in 40 Sec</Text>
+          <Text style={styles.resendText}>Resend in {counter} Sec</Text>
         </View>
       </ScrollView>
     </>
@@ -69,6 +100,10 @@ const styles = StyleSheet.create({
     marginBottom: 130,
   },
   otpInput: {},
+
+  errorContainer: {
+    marginTop: 5,
+  },
   resendContainer: {
     marginTop: 50,
   },
@@ -77,4 +112,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Verification;
+export default VerificationSignup;

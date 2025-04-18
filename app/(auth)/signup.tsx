@@ -26,7 +26,7 @@ const Signup = () => {
   });
 
   const onSubmit = () => {
-    router.replace("/(auth)/verification");
+    router.replace("/(auth)/verificationSignup");
   };
   return (
     <ScrollView

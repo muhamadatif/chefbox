@@ -13,7 +13,7 @@ import { ScrollView } from "react-native-gesture-handler";
 import { useKeyboardVisibility } from "@/hooks/useKeyboardVisibility";
 
 const Signin = () => {
-  const [showPassword, setShowPassword] = useState(false);
+  const [showPassword, setShowPassword] = useState(true);
   const isKeyboardVisible = useKeyboardVisibility();
 
   const router = useRouter();

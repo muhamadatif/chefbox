@@ -19,6 +19,7 @@ import { useKeyboardVisibility } from "@/hooks/useKeyboardVisibility";
 
 const NewPassword = () => {
   const router = useRouter();
+  const [showPassword, setShowPassword] = useState(true);
   const isKeyboardVisible = useKeyboardVisibility();
 
   const {
@@ -56,6 +57,7 @@ const NewPassword = () => {
             placeholder="New password"
             control={control}
             error={errors.password?.message}
+            secureTextEntry={showPassword}
             icon={
               <TouchableOpacity onPress={() => resetField("password")}>
                 <Text

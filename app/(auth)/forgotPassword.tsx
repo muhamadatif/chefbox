@@ -17,7 +17,6 @@ import Button from "@/components/Button";
 import { useKeyboardVisibility } from "@/hooks/useKeyboardVisibility";
 
 const ForgotPassword = () => {
-  const [successfulCode, setSuccessfulCode] = useState("");
   const router = useRouter();
   const isKeyboardVisible = useKeyboardVisibility();
 
@@ -35,17 +34,11 @@ const ForgotPassword = () => {
     let formData: { mobile?: string; email?: string } = {};
     if (data.emailOrPhone.startsWith("0")) {
       formData.mobile = data.emailOrPhone;
-      setSuccessfulCode(
-        `We have successfully send verification link to: ${formData.mobile}`
-      );
     } else {
       formData.email = data.emailOrPhone;
-      setSuccessfulCode(
-        `We have successfully send verification link to: ${formData.email}`
-      );
     }
 
-    // router.replace("/(app)/home");
+    router.replace("/(auth)/verificationForgotPassword");
   };
   return (
     <ScrollView
@@ -61,11 +54,7 @@ const ForgotPassword = () => {
           reset code
         </Text>
       </View>
-      {successfulCode && (
-        <View style={{ marginBottom: 15 }}>
-          <Text style={{ color: "cyan" }}>{successfulCode}</Text>
-        </View>
-      )}
+
       <View style={styles.form}>
         <FormField
           name="emailOrPhone"
